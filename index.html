@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Delete Button Animation</title><link rel="stylesheet" href="style.css"></head>
+<body><main class="page">
+<header><h1>Delete Button<br><span>Animation</span></h1></header>
+<section class="demo" aria-label="Delete button animation demo">
+<button class="maw__btn" id="deleteBtn" type="button">
+  <span class="maw__seat"><span class="maw__label">Delete</span>
+    <span class="maw__can" aria-hidden="true"><span class="maw__body"></span><span class="maw__twin"></span><span class="maw__lid"></span><i class="maw__slot"></i><i class="maw__slot"></i></span>
+  </span>
+</button>
+<button class="maw__btn clear" id="clearBtn" type="button">
+  <span class="maw__seat"><span class="maw__label">Clear</span>
+    <span class="maw__can" aria-hidden="true"><span class="maw__body"></span><span class="maw__twin"></span><span class="maw__lid"></span><i class="maw__slot"></i><i class="maw__slot"></i></span>
+  </span>
+</button>
+</section>
+<p class="hint" id="hint">Click <b>Delete</b> or <b>Clear</b> to replay the animation.</p>
+<div class="source-label">_code_and_chill_</div>
+<section class="code-panels">
+<article class="code-panel html"><h3><i></i> index.html</h3><pre><code>&lt;!-- the word is drawn TWICE and
+animated ONCE: the label you
+can read, and a twin inside
+the bin painted in the
+BUTTON'S OWN FACE, so a
+letter that has gone in is a
+HOLE in the wall --&gt;
+&lt;button class="maw__btn"&gt;
+  &lt;span class="maw__seat"&gt;&lt;/span&gt;
+  &lt;span class="maw__label"&gt;
+    Delete
+  &lt;/span&gt;
+  &lt;span class="maw__can"&gt;
+    &lt;span class="maw__body"&gt;
+      &lt;span class="maw__twin"&gt;&lt;/span&gt;
+      &lt;i class="maw__slot"&gt;&lt;/i&gt;
+      &lt;i class="maw__slot"&gt;&lt;/i&gt;
+    &lt;/span&gt;
+    &lt;span class="maw__lid"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/button&gt;</code></pre></article>
+<article class="code-panel css"><h3><i></i> app.css</h3><pre><code>/* THE MOUTH NEVER MOVES. The scale
+origin is the body's own TOP EDGE,
+dead centre, so the rim stays
+pinned while the bin grows DOWN
+past the bottom of the button,
+and the word has somewhere to fall */
+.maw__can {
+  transform-origin: var(--pivot-x)
+                   var(--pivot-y);
+  transform: translateX(var(--shift))
+             scale(var(--z));
+}
+
+/* the twin is SOLVED from the label,
+   never tweened beside it */
+.maw__twin {
+  --gy: calc(var(--anchor-y)
+    + var(--my) - var(--can-y)
+    - var(--pivot-y));
+  transform: scale(calc(1/var(--z)))
+    translate(var(--gx), var(--gy))
+    rotate(var(--wrot));
+}</code></pre></article>
+<article class="code-panel js"><h3><i></i> app.js</h3><pre><code>// the bin's width comes from the
+// ICON and never changes; the
+// word's comes from the TEXT, so
+// one fixed scale fits exactly
+// ONE label: "Remove" was 104% of
+// the bin and hung out of it.
+const bin = num('--body-w')
+  * num('--z-open');
+const room =
+  bin * num('--word-fill');
+
+// what must fit is its ROTATED
+// extent, not its width
+const ext = lw * Math.cos(tip)
+  + lh * Math.sin(tip);
+const sc = Math.min(
+  num('--word-sc-max'), room / ext
+);
+
+// and it rests DEAD CENTRE of the
+// bin, so it cannot leave sideways
+set('--word-x',
+  w / 2 - bboxL - ext * sc / 2);</code></pre></article>
+</section>
+<footer>CSS motion study <span>·</span> Delete / Clear interaction</footer>
+</main><script src="app.js"></script></body></html>
